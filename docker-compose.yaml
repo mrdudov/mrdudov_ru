@@ -4,10 +4,12 @@ services:
   web:
     image: nginx
     volumes:
-    - ./frontend:/usr/share/nginx/html
-    - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./frontend:/usr/share/nginx/html
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf
+      - /etc/ssl:/etc/ssl
     ports:
-    - "80:80"
+      - "80:80"
+      - "443:443"
     environment:
-    - NGINX_HOST=mrdudov.ru
-    - NGINX_PORT=80
+      - NGINX_HOST=mrdudov.ru
+      - NGINX_PORT=80
