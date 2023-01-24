@@ -1,6 +1,24 @@
 version: '3.3'
 
 services:
+  
+  redmine:
+    image: redmine
+    restart: always
+    ports:
+    - 3000:3000
+    environment:
+      REDMINE_DB_MYSQL: db
+      REDMINE_DB_PASSWORD: example
+      REDMINE_SECRET_KEY_BASE: supersecretkey
+  
+  db:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: redmine
+    
   web:
     image: nginx
     volumes:
@@ -10,6 +28,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    links:
+      - redmine
     environment:
       - NGINX_HOST=mrdudov.ru
       - NGINX_PORT=80
