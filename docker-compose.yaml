@@ -1,25 +1,30 @@
 version: '3.3'
 
 services:
-  
+
   redmine:
     image: redmine
     restart: always
     ports:
-    - 3000:3000
+      - 3000:3000
     environment:
-      REDMINE_DB_MYSQL: db
-      REDMINE_DB_PASSWORD: example
-      REDMINE_SECRET_KEY_BASE: supersecretkey
-  
+      - REDMINE_DB_MYSQL=${REDMINE_DB_MYSQL}
+      - REDMINE_DB_PASSWORD=${REDMINE_DB_PASSWORD}
+      - REDMINE_SECRET_KEY_BASE=${REDMINE_SECRET_KEY_BASE}
+
   db:
     image: mysql:5.7
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: redmine
-    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci']
-    
+      - REDMINE_DB_PASSWORD=${REDMINE_DB_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+    command:
+      [
+        'mysqld',
+        '--character-set-server=utf8mb4',
+        '--collation-server=utf8mb4_unicode_ci'
+      ]
+
   web:
     image: nginx
     volumes:
