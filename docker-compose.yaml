@@ -1,53 +1,23 @@
-version: '3.3'
+version: '3.8'
 
 services:
 
-  redmine:
-    image: redmine
-    restart: always
-    networks:
-      - redmine
-    ports:
-      - 3000:3000
-    environment:
-      - REDMINE_DB_MYSQL=${REDMINE_DB_MYSQL}
-      - REDMINE_DB_PASSWORD=${REDMINE_DB_PASSWORD}
-      - REDMINE_SECRET_KEY_BASE=${REDMINE_SECRET_KEY_BASE}
-
-  db:
-    image: mysql:5.7
-    restart: always
-    networks:
-      - redmine
-    environment:
-      - REDMINE_DB_PASSWORD=${REDMINE_DB_PASSWORD}
-      - MYSQL_DATABASE=${MYSQL_DATABASE}
-    command:
-      [
-        'mysqld',
-        '--character-set-server=utf8mb4',
-        '--collation-server=utf8mb4_unicode_ci'
-      ]
-
-  web:
+  proxy:
     image: nginx
     volumes:
       - ./frontend:/usr/share/nginx/html
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
       - /etc/ssl:/etc/ssl
     networks:
-      - backend_tic_tac_toe
-      - redmine
+      - backend
     ports:
       - "80:80"
       - "443:443"
-    links:
-      - redmine
     environment:
       - NGINX_HOST=mrdudov.ru
       - NGINX_PORT=80
 
 networks:
-  backend_tic_tac_toe:
-    external: true
-  redmine:
+  backend:
+    external:
+      name: backend_default
