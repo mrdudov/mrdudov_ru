@@ -20,4 +20,4 @@ services:
 networks:
   backend:
     external:
-      name: backend_default
+      name: tic-tac-toe_default
