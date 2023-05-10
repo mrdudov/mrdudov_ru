@@ -10,6 +10,7 @@ services:
       - /etc/ssl:/etc/ssl
     networks:
       - backend
+      - 2048-game
     ports:
       - "80:80"
       - "443:443"
@@ -21,3 +22,7 @@ networks:
   backend:
     external:
       name: tic-tac-toe_default
+  2048-game:
+    external:
+      name: 2048-game_default
+
